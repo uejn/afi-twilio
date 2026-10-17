@@ -60,28 +60,6 @@ class AfiTwilio {
 	}
 
 	/**
-	 * El aviso de que alguien quiere ver un padrón, al teléfono de la configuración.
-	 *
-	 * @deprecated Nadie la llama: AfiGestión arma su propio texto y usa enviarSms(). Queda
-	 *   para no romper a quien la use; antes además hacía `echo` de la respuesta de Twilio
-	 *   en medio de la página, y ya no.
-	 * @param string $tokenGenerado
-	 * @param string $usuario
-	 * @param int $peritableUrlId
-	 * @return bool Si Twilio lo aceptó.
-	 */
-	public static function enviar_sms($tokenGenerado, $usuario, $peritableUrlId) {
-		$tel = Configure::read('Afigestion.numero_de_telefono_sms');
-		if ($tel == '0') {
-			return false;
-		}
-		$texto = 'El usuario ' . $usuario . ' quiere ver este padrón https://www.afigestion.uejn.org.ar/p/' . $peritableUrlId .
-			" si desea que lo visualicé, darle este token: \n" . $tokenGenerado .
-			"\n Fecha de solicitud de visualización: " . date('d/m/y | h:i:s');
-		return self::enviarSms($tel, $texto);
-	}
-
-	/**
 	 * El POST, con la extensión curl de PHP. Si Twilio no lo acepta, queda en el log de
 	 * errores con lo que contestó.
 	 *
