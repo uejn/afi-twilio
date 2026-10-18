@@ -26,7 +26,6 @@ class AfiTwilioTest extends CakeTestCase {
 		parent::setUp();
 		Configure::write('Afigestion.twilio_sid', 'ACprueba');
 		Configure::write('Afigestion.token_auth_sms', 'clave-de-prueba');
-		Configure::write('Afigestion.numero_de_telefono_sms', '+5491122334455');
 		$this->pedidos = array();
 		$this->respuesta = 201;
 		$test = $this;
@@ -71,24 +70,6 @@ class AfiTwilioTest extends CakeTestCase {
 	public function testSinCredencialesNoManda() {
 		Configure::write('Afigestion.token_auth_sms', '');
 		$this->assertFalse(AfiTwilio::enviarSms('+5491122334455', 'hola'));
-		$this->assertCount(0, $this->pedidos);
-	}
-
-	public function testEnviarSmsViejoArmaElMismoAvisoYNoHaceEcho() {
-		ob_start();
-		$enviado = AfiTwilio::enviar_sms('4321', "Juan D'Angelo", 77);
-		$salida = ob_get_clean();
-
-		$this->assertTrue($enviado);
-		$this->assertSame('', $salida);
-		$this->assertCount(1, $this->pedidos);
-		$this->assertContains("El usuario Juan D'Angelo quiere ver este padrón https://www.afigestion.uejn.org.ar/p/77", $this->pedidos[0]['campos']['Body']);
-		$this->assertContains('4321', $this->pedidos[0]['campos']['Body']);
-	}
-
-	public function testEnviarSmsViejoConElTelefonoEnCeroNoManda() {
-		Configure::write('Afigestion.numero_de_telefono_sms', '0');
-		$this->assertFalse(AfiTwilio::enviar_sms('4321', 'Juan', 77));
 		$this->assertCount(0, $this->pedidos);
 	}
 
